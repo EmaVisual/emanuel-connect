@@ -25,9 +25,9 @@ const Index = () => {
     href: "https://www.behance.net/emavisual",
     icon: <Palette className="w-5 h-5" />
   }];
-  return <div className="min-h-screen bg-gradient-primary">
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-md mx-auto space-y-6 flex flex-col items-center">
+  return <div className="min-h-screen bg-gradient-primary flex items-center justify-center">
+      <div className="container mx-auto px-4 py-8 flex justify-center">
+        <div className="max-w-md w-full space-y-6 flex flex-col items-center">
           
           {/* Profile Header */}
           <ProfileHeader name="Emanuel Parra | Graphic Design" description="¡Diseño gráfico, diseño web y arte!" imageUrl="/lovable-uploads/f877dab3-a083-48f5-841a-3678f90c4eee.png" />

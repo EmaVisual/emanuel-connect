@@ -9,9 +9,9 @@ interface ProfileHeaderProps {
 export const ProfileHeader = ({ name, description, imageUrl }: ProfileHeaderProps) => {
   return (
     <div className="flex flex-col items-center text-center space-y-4 mb-8">
-      <Avatar className="profile-avatar">
+      <Avatar className="profile-avatar w-56 h-56">
         <AvatarImage src={imageUrl} alt={name} />
-        <AvatarFallback className="text-2xl font-bold bg-primary text-primary-foreground">
+        <AvatarFallback className="text-3xl font-bold bg-primary text-primary-foreground">
           {name.split(' ').map(n => n[0]).join('')}
         </AvatarFallback>
       </Avatar>

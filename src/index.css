@@ -140,9 +140,9 @@ All colors MUST be HSL.
   }
   
   .profile-avatar {
-    @apply w-40 h-40 rounded-full border-4 border-primary/30 shadow-lg;
+    @apply rounded-full border-4 border-primary/30 shadow-lg;
     box-shadow: var(--shadow-neon);
-    animation: pulse 2s infinite, fadeInScale 0.8s ease-out;
+    animation: fadeInScale 0.8s ease-out;
   }
   
   .social-icon {
