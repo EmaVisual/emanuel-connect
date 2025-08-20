@@ -8,35 +8,46 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 270 100% 25%;
+    --foreground: 0 0% 100%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 270 100% 25%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 270 100% 25%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 120 100% 50%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 270 50% 40%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 270 30% 60%;
+    --muted-foreground: 0 0% 80%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 120 100% 50%;
+    --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 270 30% 60%;
+    --input: 270 30% 60%;
+    --ring: 120 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 12px;
+    
+    /* Custom gradient backgrounds */
+    --gradient-primary: linear-gradient(135deg, hsl(270 100% 40%), hsl(290 100% 25%));
+    --gradient-button: linear-gradient(90deg, hsl(120 100% 50%), hsl(140 100% 45%));
+    
+    /* Custom shadows */
+    --shadow-neon: 0 0 20px hsl(120 100% 50% / 0.3);
+    --shadow-button: 0 4px 20px hsl(120 100% 50% / 0.2);
+    
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +111,37 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    background: var(--gradient-primary);
+    @apply text-foreground min-h-screen;
+  }
+}
+
+@layer components {
+  .link-button {
+    @apply w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-4 px-6 rounded-xl transition-all duration-300 ease-out transform hover:scale-[1.02] shadow-lg;
+    background: var(--gradient-button);
+    box-shadow: var(--shadow-button);
+    border: 2px solid transparent;
+  }
+  
+  .link-button:hover {
+    box-shadow: var(--shadow-neon);
+    transform: translateY(-2px) scale(1.02);
+  }
+  
+  .profile-avatar {
+    @apply w-32 h-32 rounded-full border-4 border-primary/30 shadow-lg;
+    box-shadow: var(--shadow-neon);
+  }
+  
+  .social-icon {
+    @apply w-8 h-8 text-foreground/80 hover:text-primary transition-colors duration-300;
+  }
+  
+  .gradient-text {
+    background: var(--gradient-button);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }

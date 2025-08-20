@@ -18,6 +18,14 @@ export default {
 			}
 		},
 		extend: {
+			backgroundImage: {
+				'gradient-primary': 'var(--gradient-primary)',
+				'gradient-button': 'var(--gradient-button)',
+			},
+			boxShadow: {
+				'neon': 'var(--shadow-neon)',
+				'button': 'var(--shadow-button)',
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
