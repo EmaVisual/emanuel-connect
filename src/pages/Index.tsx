@@ -36,7 +36,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-primary">
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-md mx-auto space-y-6">
+        <div className="max-w-md mx-auto space-y-6 flex flex-col items-center">
           
           {/* Profile Header */}
           <ProfileHeader 
@@ -49,7 +49,7 @@ const Index = () => {
           <SocialLinks />
 
           {/* Link Buttons */}
-          <div className="space-y-4">
+          <div className="space-y-4 w-full">
             {links.map((link, index) => (
               <LinkButton 
                 key={index}
@@ -62,7 +62,7 @@ const Index = () => {
           </div>
 
           {/* Spotify Embed */}
-          <div className="pt-6">
+          <div className="pt-6 w-full">
             <SpotifyEmbed />
           </div>
 
