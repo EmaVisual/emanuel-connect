@@ -20,7 +20,7 @@ export const ProfileHeader = ({ name, description, imageUrl }: ProfileHeaderProp
         <h1 className="text-2xl md:text-3xl font-bold text-foreground">
           {name}
         </h1>
-        <p className="text-foreground/80 text-lg max-w-sm">
+        <p className="text-foreground/80 text-lg max-w-sm text-center">
           {description}
         </p>
       </div>
