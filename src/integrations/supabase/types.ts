@@ -50,6 +50,76 @@ export type Database = {
         }
         Relationships: []
       }
+      link_clicks: {
+        Row: {
+          clicked_at: string
+          id: string
+          link_id: string | null
+          link_title: string
+          link_type: string
+          referrer: string | null
+          user_id: string
+        }
+        Insert: {
+          clicked_at?: string
+          id?: string
+          link_id?: string | null
+          link_title: string
+          link_type: string
+          referrer?: string | null
+          user_id: string
+        }
+        Update: {
+          clicked_at?: string
+          id?: string
+          link_id?: string | null
+          link_title?: string
+          link_type?: string
+          referrer?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_link_clicks_user"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profile_views: {
+        Row: {
+          id: string
+          referrer: string | null
+          user_agent: string | null
+          user_id: string
+          viewed_at: string
+        }
+        Insert: {
+          id?: string
+          referrer?: string | null
+          user_agent?: string | null
+          user_id: string
+          viewed_at?: string
+        }
+        Update: {
+          id?: string
+          referrer?: string | null
+          user_agent?: string | null
+          user_id?: string
+          viewed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_profile_views_user"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null

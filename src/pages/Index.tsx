@@ -20,7 +20,24 @@ const Index = () => {
   useEffect(() => {
     loadData();
     checkAuth();
+    trackProfileView();
   }, []);
+
+  const trackProfileView = async () => {
+    const { data: profiles } = await supabase
+      .from("profiles")
+      .select("id")
+      .limit(1)
+      .maybeSingle();
+
+    if (profiles) {
+      await supabase.from("profile_views").insert({
+        user_id: profiles.id,
+        referrer: document.referrer || null,
+        user_agent: navigator.userAgent,
+      });
+    }
+  };
 
   const checkAuth = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -104,7 +121,13 @@ const Index = () => {
           {/* Custom Link Buttons */}
           <div className="space-y-4 w-full">
             {customLinks.map((link) => (
-              <LinkButton key={link.id} href={link.url} icon={getIcon(link.icon_name)}>
+              <LinkButton 
+                key={link.id} 
+                href={link.url} 
+                icon={getIcon(link.icon_name)}
+                linkId={link.id}
+                userId={link.user_id}
+              >
                 {link.title}
               </LinkButton>
             ))}

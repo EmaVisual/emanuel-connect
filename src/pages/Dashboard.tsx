@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { LogOut, Save, Eye, Loader2 } from "lucide-react";
 import { SocialLinksForm } from "@/components/dashboard/SocialLinksForm";
 import { CustomLinksForm } from "@/components/dashboard/CustomLinksForm";
+import { AnalyticsCard } from "@/components/dashboard/AnalyticsCard";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -58,10 +59,11 @@ const Dashboard = () => {
         </div>
 
         <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="profile">Perfil</TabsTrigger>
             <TabsTrigger value="social">Redes Sociales</TabsTrigger>
             <TabsTrigger value="custom">Links Personalizados</TabsTrigger>
+            <TabsTrigger value="analytics">Analíticas</TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile">
@@ -98,6 +100,10 @@ const Dashboard = () => {
 
           <TabsContent value="custom">
             <CustomLinksForm userId={userId} />
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <AnalyticsCard userId={userId} />
           </TabsContent>
         </Tabs>
       </div>
