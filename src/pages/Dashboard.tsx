@@ -9,6 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LogOut, Save, Eye, Loader2 } from "lucide-react";
+import { SocialLinksForm } from "@/components/dashboard/SocialLinksForm";
+import { CustomLinksForm } from "@/components/dashboard/CustomLinksForm";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -55,31 +57,49 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Editar Perfil</CardTitle>
-            <CardDescription>Actualiza la información de tu página pública</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label>Nombre</Label>
-              <Input value={profile.name} onChange={(e) => setProfile({...profile, name: e.target.value})} />
-            </div>
-            <div className="space-y-2">
-              <Label>Descripción</Label>
-              <Textarea value={profile.description} onChange={(e) => setProfile({...profile, description: e.target.value})} />
-            </div>
-            <div className="space-y-2">
-              <Label>URL Avatar</Label>
-              <Input value={profile.avatar_url} onChange={(e) => setProfile({...profile, avatar_url: e.target.value})} />
-            </div>
-            <div className="space-y-2">
-              <Label>Spotify Embed URL</Label>
-              <Input value={profile.spotify_embed_url} onChange={(e) => setProfile({...profile, spotify_embed_url: e.target.value})} />
-            </div>
-            <Button onClick={saveProfile}><Save className="mr-2 h-4 w-4" />Guardar</Button>
-          </CardContent>
-        </Card>
+        <Tabs defaultValue="profile" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="profile">Perfil</TabsTrigger>
+            <TabsTrigger value="social">Redes Sociales</TabsTrigger>
+            <TabsTrigger value="custom">Links Personalizados</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="profile">
+            <Card>
+              <CardHeader>
+                <CardTitle>Información del Perfil</CardTitle>
+                <CardDescription>Actualiza tu información básica y configuración de Spotify</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Nombre</Label>
+                  <Input value={profile.name} onChange={(e) => setProfile({...profile, name: e.target.value})} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Descripción</Label>
+                  <Textarea value={profile.description} onChange={(e) => setProfile({...profile, description: e.target.value})} />
+                </div>
+                <div className="space-y-2">
+                  <Label>URL Avatar</Label>
+                  <Input value={profile.avatar_url} onChange={(e) => setProfile({...profile, avatar_url: e.target.value})} />
+                </div>
+                <div className="space-y-2">
+                  <Label>Spotify Embed URL</Label>
+                  <Input value={profile.spotify_embed_url} onChange={(e) => setProfile({...profile, spotify_embed_url: e.target.value})} />
+                </div>
+                <Button onClick={saveProfile}><Save className="mr-2 h-4 w-4" />Guardar Perfil</Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="social">
+            <SocialLinksForm userId={userId} />
+          </TabsContent>
+
+          <TabsContent value="custom">
+            <CustomLinksForm userId={userId} />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
