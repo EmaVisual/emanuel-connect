@@ -1,52 +1,46 @@
 import { Instagram, Linkedin, Mail, Globe, Music } from "lucide-react";
 
-interface SocialLink {
-  icon: React.ReactNode;
-  href: string;
-  label: string;
+interface SocialLinksProps {
+  links: Array<{
+    platform: string;
+    url: string;
+  }>;
 }
 
-export const SocialLinks = () => {
-  const socialLinks: SocialLink[] = [
-    {
-      icon: <Instagram className="social-icon" />,
-      href: "https://www.instagram.com/ema.visual",
-      label: "Instagram"
-    },
-    {
-      icon: <Linkedin className="social-icon" />,
-      href: "https://linkedin.com/in/emavisual",
-      label: "LinkedIn"
-    },
-    {
-      icon: <Music className="social-icon" />,
-      href: "https://tiktok.com/@ema.visual",
-      label: "TikTok"
-    },
-    {
-      icon: <Mail className="social-icon" />,
-      href: "mailto:emanuel@staymadagency.com",
-      label: "Email"
-    },
-    {
-      icon: <Globe className="social-icon" />,
-      href: "https://emavisual.vercel.app/",
-      label: "Website"
+export const SocialLinks = ({ links }: SocialLinksProps) => {
+  const getIcon = (platform: string) => {
+    switch (platform) {
+      case "instagram":
+        return <Instagram className="social-icon" />;
+      case "linkedin":
+        return <Linkedin className="social-icon" />;
+      case "tiktok":
+        return <Music className="social-icon" />;
+      case "email":
+        return <Mail className="social-icon" />;
+      case "website":
+        return <Globe className="social-icon" />;
+      default:
+        return <Globe className="social-icon" />;
     }
-  ];
+  };
+
+  const getLabel = (platform: string) => {
+    return platform.charAt(0).toUpperCase() + platform.slice(1);
+  };
 
   return (
     <div className="flex justify-center space-x-6 mb-8">
-      {socialLinks.map((link, index) => (
+      {links.map((link) => (
         <a
-          key={index}
-          href={link.href}
+          key={link.platform}
+          href={link.url}
           target="_blank"
           rel="noopener noreferrer"
           className="hover:scale-110 transition-transform duration-300"
-          aria-label={link.label}
+          aria-label={getLabel(link.platform)}
         >
-          {link.icon}
+          {getIcon(link.platform)}
         </a>
       ))}
     </div>
