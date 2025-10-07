@@ -1,101 +1,85 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { LogOut, User, Link as LinkIcon, Music } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ProfileForm } from "@/components/dashboard/ProfileForm";
-import { SocialLinksForm } from "@/components/dashboard/SocialLinksForm";
-import { CustomLinksForm } from "@/components/dashboard/CustomLinksForm";
-import { Session } from "@supabase/supabase-js";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { LogOut, Save, Eye, Loader2 } from "lucide-react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState<string>("");
+  const [profile, setProfile] = useState({ name: "", description: "", avatar_url: "", spotify_embed_url: "" });
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setLoading(false);
-      if (!session) {
-        navigate("/auth");
-      }
-    });
+    loadProfile();
+  }, []);
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      if (!session) {
-        navigate("/auth");
-      }
-    });
+  const loadProfile = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return navigate("/auth");
+    
+    setUserId(user.id);
+    const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+    if (data) setProfile(data);
+    setLoading(false);
+  };
 
-    return () => subscription.unsubscribe();
-  }, [navigate]);
+  const saveProfile = async () => {
+    const { error } = await supabase.from("profiles").update(profile).eq("id", userId);
+    if (error) return toast({ title: "Error", description: error.message, variant: "destructive" });
+    toast({ title: "¡Guardado!", description: "Perfil actualizado correctamente." });
+  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate("/");
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-primary flex items-center justify-center">
-        <p className="text-foreground">Cargando...</p>
-      </div>
-    );
-  }
-
-  if (!session) {
-    return null;
-  }
+  if (loading) return <div className="min-h-screen bg-gradient-primary flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin" /></div>;
 
   return (
-    <div className="min-h-screen bg-gradient-primary">
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-          <div className="flex gap-4">
-            <Button variant="outline" onClick={() => navigate("/")}>
-              Ver Perfil Público
-            </Button>
-            <Button variant="destructive" onClick={handleLogout}>
-              <LogOut className="w-4 h-4 mr-2" />
-              Cerrar Sesión
-            </Button>
+    <div className="min-h-screen bg-gradient-primary p-8">
+      <div className="container mx-auto max-w-4xl">
+        <div className="flex justify-between mb-8">
+          <h1 className="text-4xl font-bold text-foreground">Dashboard</h1>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => navigate("/")}><Eye className="mr-2 h-4 w-4" />Ver Perfil</Button>
+            <Button variant="outline" onClick={handleLogout}><LogOut className="mr-2 h-4 w-4" />Salir</Button>
           </div>
         </div>
 
-        <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="profile">
-              <User className="w-4 h-4 mr-2" />
-              Perfil
-            </TabsTrigger>
-            <TabsTrigger value="social">
-              <LinkIcon className="w-4 h-4 mr-2" />
-              Redes Sociales
-            </TabsTrigger>
-            <TabsTrigger value="links">
-              <Music className="w-4 h-4 mr-2" />
-              Links Personalizados
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="profile">
-            <ProfileForm userId={session.user.id} />
-          </TabsContent>
-
-          <TabsContent value="social">
-            <SocialLinksForm userId={session.user.id} />
-          </TabsContent>
-
-          <TabsContent value="links">
-            <CustomLinksForm userId={session.user.id} />
-          </TabsContent>
-        </Tabs>
+        <Card>
+          <CardHeader>
+            <CardTitle>Editar Perfil</CardTitle>
+            <CardDescription>Actualiza la información de tu página pública</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label>Nombre</Label>
+              <Input value={profile.name} onChange={(e) => setProfile({...profile, name: e.target.value})} />
+            </div>
+            <div className="space-y-2">
+              <Label>Descripción</Label>
+              <Textarea value={profile.description} onChange={(e) => setProfile({...profile, description: e.target.value})} />
+            </div>
+            <div className="space-y-2">
+              <Label>URL Avatar</Label>
+              <Input value={profile.avatar_url} onChange={(e) => setProfile({...profile, avatar_url: e.target.value})} />
+            </div>
+            <div className="space-y-2">
+              <Label>Spotify Embed URL</Label>
+              <Input value={profile.spotify_embed_url} onChange={(e) => setProfile({...profile, spotify_embed_url: e.target.value})} />
+            </div>
+            <Button onClick={saveProfile}><Save className="mr-2 h-4 w-4" />Guardar</Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -5,107 +5,62 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { z } from "zod";
-
-const authSchema = z.object({
-  email: z.string().email("Email inválido"),
-  password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
-});
+import { Loader2 } from "lucide-react";
 
 const Auth = () => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        navigate("/dashboard");
-      }
+      if (session) navigate("/dashboard");
     });
   }, [navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    const validation = authSchema.safeParse({ email, password });
-    if (!validation.success) {
-      toast({
-        title: "Error de validación",
-        description: validation.error.errors[0].message,
-        variant: "destructive",
-      });
-      return;
-    }
-
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      toast({
-        title: "Error al iniciar sesión",
-        description: error.message,
-        variant: "destructive",
-      });
-    } else {
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      
+      toast({ title: "¡Bienvenido!", description: "Has iniciado sesión correctamente." });
       navigate("/dashboard");
+    } catch (error: any) {
+      toast({ title: "Error al iniciar sesión", description: error.message, variant: "destructive" });
+    } finally {
+      setLoading(false);
     }
-    
-    setLoading(false);
   };
 
   return (
     <div className="min-h-screen bg-gradient-primary flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-8">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-foreground mb-2">
-            Iniciar Sesión
-          </h1>
-          <p className="text-foreground/70">
-            Accede a tu dashboard
-          </p>
+      <form onSubmit={handleLogin} className="w-full max-w-md space-y-6 bg-card/50 backdrop-blur-sm p-8 rounded-2xl border border-border/50">
+        <div className="text-center mb-6">
+          <h1 className="text-4xl font-bold text-foreground mb-2">Iniciar Sesión</h1>
+          <p className="text-foreground/60">Accede a tu panel de administración</p>
         </div>
-
-        <form onSubmit={handleLogin} className="space-y-6 bg-card/50 backdrop-blur-sm p-8 rounded-2xl border border-white/10">
+        
+        <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="tu@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required disabled={loading} />
           </div>
-
+          
           <div className="space-y-2">
             <Label htmlFor="password">Contraseña</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required disabled={loading} />
           </div>
-
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={loading}
-          >
-            {loading ? "Iniciando..." : "Iniciar Sesión"}
+          
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Iniciando sesión...</> : "Iniciar Sesión"}
           </Button>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 };
