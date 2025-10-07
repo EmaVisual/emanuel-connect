@@ -19,6 +19,8 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
   const [uploading, setUploading] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
+  const [company, setCompany] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [spotifyEmbedUrl, setSpotifyEmbedUrl] = useState("");
 
@@ -36,6 +38,8 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
     if (data) {
       setName(data.name || "");
       setDescription(data.description || "");
+      setJobTitle((data as any).job_title || "");
+      setCompany((data as any).company || "");
       setAvatarUrl(data.avatar_url || "");
       setSpotifyEmbedUrl(data.spotify_embed_url || "");
     }
@@ -97,6 +101,8 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
         id: userId,
         name,
         description,
+        job_title: jobTitle,
+        company,
         avatar_url: avatarUrl,
         spotify_embed_url: spotifyEmbedUrl,
       });
@@ -134,6 +140,27 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
               placeholder="Tu nombre"
               required
             />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="jobTitle">Cargo</Label>
+              <Input
+                id="jobTitle"
+                value={jobTitle}
+                onChange={(e) => setJobTitle(e.target.value)}
+                placeholder="Tu cargo (por ej. Desarrollador)"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="company">Empresa</Label>
+              <Input
+                id="company"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                placeholder="Nombre de la empresa"
+              />
+            </div>
           </div>
 
           <div className="space-y-2">

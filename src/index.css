@@ -1,55 +1,58 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 270 100% 15%;
-    --foreground: 0 0% 100%;
+    /* Palette:
+      primary: #ff6600 -> 24 100% 50%
+      background: #210900 -> 16 100% 6%
+      secondary: #962700 -> 16 100% 29%
+      accent: #ffa35d -> 26 100% 68%
+      foreground: #ffefe5 -> 23 100% 95%
+    */
+    --background: 16 100% 6%;
+    --foreground: 23 100% 95%;
 
-    --card: 270 100% 15%;
-    --card-foreground: 0 0% 100%;
+    --card: 16 100% 6%;
+    --card-foreground: 23 100% 95%;
 
-    --popover: 270 100% 15%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 16 100% 6%;
+    --popover-foreground: 23 100% 95%;
 
-    --primary: 120 100% 50%;
+    --primary: 24 100% 50%;
     --primary-foreground: 0 0% 0%;
 
-    --secondary: 270 50% 30%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 16 100% 29%;
+    --secondary-foreground: 23 100% 95%;
 
-    --muted: 270 30% 50%;
-    --muted-foreground: 0 0% 80%;
+    --muted: 26 100% 68%;
+    --muted-foreground: 16 30% 25%;
 
-    --accent: 120 100% 50%;
-    --accent-foreground: 0 0% 0%;
+    --accent: 26 100% 68%;
+    --accent-foreground: 16 100% 6%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 270 30% 50%;
-    --input: 270 30% 50%;
-    --ring: 120 100% 50%;
+    --border: 16 100% 29%;
+    --input: 16 100% 29%;
+    --ring: 24 100% 50%;
 
     --radius: 0px;
     
-    /* Custom gradient backgrounds - deeper purple */
-    --gradient-primary: linear-gradient(135deg, hsl(270 100% 20%), hsl(285 100% 10%));
-    --gradient-button: linear-gradient(90deg, hsl(120 100% 50%), hsl(140 100% 45%));
+    /* Custom gradient backgrounds - orange theme */
+    --gradient-primary: linear-gradient(135deg, hsl(16 100% 8%), hsl(16 100% 4%));
+    --gradient-button: linear-gradient(90deg, hsl(24 100% 50%), hsl(26 100% 68%));
     
     /* Custom shadows */
-    --shadow-neon: 0 0 20px hsl(120 100% 50% / 0.3);
-    --shadow-button: 6px 6px 0px #000000;
-    --shadow-button-hover: 0px 0px 0px #000000;
+    --shadow-neon: 0 0 20px hsl(24 100% 50% / 0.3);
     
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
     --sidebar-background: 0 0% 98%;
 
     --sidebar-foreground: 240 5.3% 26.1%;

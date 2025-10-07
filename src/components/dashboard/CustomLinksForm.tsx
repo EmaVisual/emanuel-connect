@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Trash2, GripVertical } from "lucide-react";
+import { Plus, Trash2, GripVertical, Zap, Link as LinkIcon, Globe, Github, Instagram, Facebook, Twitter, Youtube, Linkedin, Music, Mail, Phone } from "lucide-react";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 
 interface CustomLinksFormProps {
   userId: string;
@@ -101,6 +102,26 @@ export const CustomLinksForm = ({ userId }: CustomLinksFormProps) => {
     setLinks(newLinks);
   };
 
+  const iconOptions = [
+    { name: "Zap", Comp: Zap },
+    { name: "Link", Comp: LinkIcon },
+    { name: "Globe", Comp: Globe },
+    { name: "Github", Comp: Github },
+    { name: "Instagram", Comp: Instagram },
+    { name: "Facebook", Comp: Facebook },
+    { name: "Twitter", Comp: Twitter },
+    { name: "Youtube", Comp: Youtube },
+    { name: "Linkedin", Comp: Linkedin },
+    { name: "Music", Comp: Music },
+    { name: "Mail", Comp: Mail },
+    { name: "Phone", Comp: Phone },
+  ] as const;
+
+  const getIconComp = (name?: string) => {
+    const found = iconOptions.find(o => o.name === name);
+    return (found?.Comp ?? Zap);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -108,7 +129,9 @@ export const CustomLinksForm = ({ userId }: CustomLinksFormProps) => {
         <CardDescription>Agrega y ordena tus enlaces personalizados</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {links.map((link, index) => (
+        {links.map((link, index) => {
+          const Preview = getIconComp(link.icon_name);
+          return (
           <div key={index} className="flex gap-2 items-end">
             <div className="flex-1 space-y-2">
               <Label>Título</Label>
@@ -126,13 +149,26 @@ export const CustomLinksForm = ({ userId }: CustomLinksFormProps) => {
                 placeholder="https://..."
               />
             </div>
-            <div className="w-32 space-y-2">
+            <div className="w-48 space-y-2">
               <Label>Icono</Label>
-              <Input
-                value={link.icon_name}
-                onChange={(e) => updateLink(index, "icon_name", e.target.value)}
-                placeholder="Zap"
-              />
+              <Select value={link.icon_name} onValueChange={(v) => updateLink(index, "icon_name", v)}>
+                <SelectTrigger>
+                  <div className="flex items-center gap-2">
+                    <Preview className="w-4 h-4" />
+                    <SelectValue placeholder="Selecciona un icono" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  {iconOptions.map(({ name, Comp }) => (
+                    <SelectItem key={name} value={name}>
+                      <div className="flex items-center gap-2">
+                        <Comp className="w-4 h-4" />
+                        <span>{name}</span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <Button
               type="button"
@@ -143,7 +179,7 @@ export const CustomLinksForm = ({ userId }: CustomLinksFormProps) => {
               <Trash2 className="w-4 h-4" />
             </Button>
           </div>
-        ))}
+        )})}
 
         <div className="flex gap-2">
           <Button type="button" variant="outline" onClick={addLink}>

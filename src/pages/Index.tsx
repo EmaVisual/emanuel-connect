@@ -112,10 +112,10 @@ const Index = () => {
               name={profile.name || "Emanuel Parra | Graphic Design"}
               description={profile.description || "¡Diseño gráfico, diseño web y arte!"}
               imageUrl={profile.avatar_url || "/lovable-uploads/f877dab3-a083-48f5-841a-3678f90c4eee.png"}
+              jobTitle={profile.job_title || ""}
+              company={profile.company || ""}
             />
           )}
-
-          {/* Social Links */}
           {socialLinks.length > 0 && <SocialLinks links={socialLinks} />}
 
           {/* Custom Link Buttons */}
