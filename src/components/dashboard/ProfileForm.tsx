@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Upload } from "lucide-react";
 
 interface ProfileFormProps {
   userId: string;
@@ -14,6 +16,7 @@ interface ProfileFormProps {
 export const ProfileForm = ({ userId }: ProfileFormProps) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
@@ -35,6 +38,52 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
       setDescription(data.description || "");
       setAvatarUrl(data.avatar_url || "");
       setSpotifyEmbedUrl(data.spotify_embed_url || "");
+    }
+  };
+
+  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast({
+        title: "Error",
+        description: "Por favor sube una imagen válida",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      const fileExt = file.name.split(".").pop();
+      const filePath = `${userId}/${Math.random()}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("avatars")
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from("avatars")
+        .getPublicUrl(filePath);
+
+      setAvatarUrl(publicUrl);
+
+      toast({
+        title: "Imagen subida",
+        description: "Tu foto de perfil se ha subido correctamente. No olvides guardar los cambios.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -99,13 +148,28 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="avatarUrl">URL de Foto de Perfil</Label>
-            <Input
-              id="avatarUrl"
-              value={avatarUrl}
-              onChange={(e) => setAvatarUrl(e.target.value)}
-              placeholder="/lovable-uploads/..."
-            />
+            <Label>Foto de Perfil</Label>
+            <div className="flex items-center gap-4">
+              <Avatar className="w-20 h-20">
+                <AvatarImage src={avatarUrl} alt={name} />
+                <AvatarFallback>
+                  {name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <Input
+                  id="avatar"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarUpload}
+                  disabled={uploading}
+                  className="cursor-pointer"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  {uploading ? "Subiendo..." : "Selecciona una imagen de tu dispositivo"}
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -118,7 +182,7 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
             />
           </div>
 
-          <Button type="submit" disabled={loading}>
+          <Button type="submit" disabled={loading || uploading}>
             {loading ? "Guardando..." : "Guardar Cambios"}
           </Button>
         </form>
