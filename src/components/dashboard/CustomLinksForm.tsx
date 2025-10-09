@@ -132,30 +132,32 @@ export const CustomLinksForm = ({ userId }: CustomLinksFormProps) => {
         {links.map((link, index) => {
           const Preview = getIconComp(link.icon_name);
           return (
-          <div key={index} className="flex gap-2 items-end">
+          <div key={index} className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-end p-3 sm:p-0 border sm:border-0 rounded-lg">
             <div className="flex-1 space-y-2">
-              <Label>Título</Label>
+              <Label className="text-xs sm:text-sm">Título</Label>
               <Input
                 value={link.title}
                 onChange={(e) => updateLink(index, "title", e.target.value)}
                 placeholder="Título del link"
+                className="text-sm"
               />
             </div>
             <div className="flex-1 space-y-2">
-              <Label>URL</Label>
+              <Label className="text-xs sm:text-sm">URL</Label>
               <Input
                 value={link.url}
                 onChange={(e) => updateLink(index, "url", e.target.value)}
                 placeholder="https://..."
+                className="text-sm"
               />
             </div>
-            <div className="w-48 space-y-2">
-              <Label>Icono</Label>
+            <div className="w-full sm:w-40 space-y-2">
+              <Label className="text-xs sm:text-sm">Icono</Label>
               <Select value={link.icon_name} onValueChange={(v) => updateLink(index, "icon_name", v)}>
-                <SelectTrigger>
+                <SelectTrigger className="text-sm">
                   <div className="flex items-center gap-2">
                     <Preview className="w-4 h-4" />
-                    <SelectValue placeholder="Selecciona un icono" />
+                    <SelectValue placeholder="Selecciona" />
                   </div>
                 </SelectTrigger>
                 <SelectContent>
@@ -175,18 +177,20 @@ export const CustomLinksForm = ({ userId }: CustomLinksFormProps) => {
               variant="destructive"
               size="icon"
               onClick={() => removeLink(index)}
+              className="w-full sm:w-auto"
             >
               <Trash2 className="w-4 h-4" />
+              <span className="ml-2 sm:hidden">Eliminar</span>
             </Button>
           </div>
         )})}
 
-        <div className="flex gap-2">
-          <Button type="button" variant="outline" onClick={addLink}>
+        <div className="flex flex-col sm:flex-row gap-2">
+          <Button type="button" variant="outline" onClick={addLink} className="w-full sm:w-auto">
             <Plus className="w-4 h-4 mr-2" />
             Agregar Link
           </Button>
-          <Button onClick={handleSave} disabled={loading}>
+          <Button onClick={handleSave} disabled={loading} className="w-full sm:w-auto">
             {loading ? "Guardando..." : "Guardar Cambios"}
           </Button>
         </div>

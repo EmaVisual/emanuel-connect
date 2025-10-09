@@ -35,22 +35,28 @@ const Dashboard = () => {
   if (loading) return <div className="min-h-screen bg-gradient-primary flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin" /></div>;
 
   return (
-    <div className="min-h-screen bg-gradient-primary p-8">
-      <div className="container mx-auto max-w-4xl">
-        <div className="flex justify-between mb-8">
-          <h1 className="text-4xl font-bold text-foreground">Dashboard</h1>
-          <div className="flex gap-2">
-            <Button variant="outline" onClick={() => navigate("/")}><Eye className="mr-2 h-4 w-4" />Ver Perfil</Button>
-            <Button variant="outline" onClick={handleLogout}><LogOut className="mr-2 h-4 w-4" />Salir</Button>
+    <div className="min-h-screen bg-gradient-primary">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-4xl">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">Panel de Administración</h1>
+          <div className="flex gap-2 w-full sm:w-auto">
+            <Button variant="outline" onClick={() => navigate("/")} className="flex-1 sm:flex-none text-sm">
+              <Eye className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden xs:inline">Ver Perfil</span>
+            </Button>
+            <Button variant="outline" onClick={handleLogout} className="flex-1 sm:flex-none text-sm">
+              <LogOut className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden xs:inline">Salir</span>
+            </Button>
           </div>
         </div>
 
-        <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="profile">Perfil</TabsTrigger>
-            <TabsTrigger value="social">Redes Sociales</TabsTrigger>
-            <TabsTrigger value="custom">Links Personalizados</TabsTrigger>
-            <TabsTrigger value="analytics">Analíticas</TabsTrigger>
+        <Tabs defaultValue="profile" className="w-full space-y-4 sm:space-y-6">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 h-auto gap-1">
+            <TabsTrigger value="profile" className="text-xs sm:text-sm py-2 sm:py-2.5">Perfil</TabsTrigger>
+            <TabsTrigger value="social" className="text-xs sm:text-sm py-2 sm:py-2.5">Redes</TabsTrigger>
+            <TabsTrigger value="custom" className="text-xs sm:text-sm py-2 sm:py-2.5">Links</TabsTrigger>
+            <TabsTrigger value="analytics" className="text-xs sm:text-sm py-2 sm:py-2.5">Analíticas</TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile">
@@ -70,9 +76,9 @@ const Dashboard = () => {
           </TabsContent>
         </Tabs>
 
-        <footer className="mt-12 pb-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-          <img src={connexoLogo} alt="Connexo" className="h-6" />
-          <span>Desarrollado por Connexo</span>
+        <footer className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-border/50 flex flex-col items-center gap-2 sm:gap-3">
+          <img src={connexoLogo} alt="Connexo Logo" className="h-6 sm:h-8" />
+          <p className="text-foreground/60 text-xs sm:text-sm">Desarrollado por Connexo</p>
         </footer>
       </div>
     </div>

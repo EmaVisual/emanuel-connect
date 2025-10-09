@@ -10,24 +10,24 @@ interface ProfileHeaderProps {
 
 export const ProfileHeader = ({ name, description, imageUrl, jobTitle, company }: ProfileHeaderProps) => {
   return (
-    <div className="flex flex-col items-center text-center space-y-4 mb-8">
-      <Avatar className="profile-avatar w-56 h-56">
+    <div className="flex flex-col items-center text-center space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+      <Avatar className="profile-avatar w-32 h-32 sm:w-48 sm:h-48 md:w-56 md:h-56">
         <AvatarImage src={imageUrl} alt={name} />
-        <AvatarFallback className="text-3xl font-bold bg-primary text-primary-foreground">
+        <AvatarFallback className="text-xl sm:text-2xl md:text-3xl font-bold bg-primary text-primary-foreground">
           {name.split(' ').map(n => n[0]).join('')}
         </AvatarFallback>
       </Avatar>
       
-      <div className="space-y-2">
-        <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+      <div className="space-y-1 sm:space-y-2">
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">
           {name}
         </h1>
         {(jobTitle || company) && (
-          <p className="text-foreground/90 text-base">
+          <p className="text-foreground/90 text-sm sm:text-base">
             {jobTitle || ""}{jobTitle && company ? " • " : ""}{company || ""}
           </p>
         )}
-        <p className="text-foreground/80 text-lg max-w-sm text-center">
+        <p className="text-foreground/80 text-base sm:text-lg max-w-sm text-center px-2">
           {description}
         </p>
       </div>

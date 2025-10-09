@@ -38,11 +38,11 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-primary flex items-center justify-center p-4">
-      <form onSubmit={handleLogin} className="w-full max-w-md space-y-6 bg-card/50 backdrop-blur-sm p-8 rounded-2xl border border-border/50">
-        <div className="text-center mb-6">
-          <h1 className="text-4xl font-bold text-foreground mb-2">Iniciar Sesión</h1>
-          <p className="text-foreground/60">Accede a tu panel de administración</p>
+    <div className="min-h-screen bg-gradient-primary flex items-center justify-center p-3 sm:p-4">
+      <form onSubmit={handleLogin} className="w-full max-w-md space-y-4 sm:space-y-6 bg-card/50 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-border/50">
+        <div className="text-center mb-4 sm:mb-6">
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">Iniciar Sesión</h1>
+          <p className="text-sm sm:text-base text-foreground/60">Accede a tu panel de administración</p>
         </div>
         
         <div className="space-y-4">

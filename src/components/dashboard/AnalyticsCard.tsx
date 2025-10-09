@@ -112,9 +112,9 @@ export const AnalyticsCard = ({ userId }: AnalyticsCardProps) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total de Vistas</CardTitle>
@@ -154,17 +154,17 @@ export const AnalyticsCard = ({ userId }: AnalyticsCardProps) => {
         </CardHeader>
         <CardContent>
           {viewsOverTime.length > 0 ? (
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250} className="sm:h-[300px]">
               <LineChart data={viewsOverTime}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
+                <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip />
                 <Line type="monotone" dataKey="views" stroke="hsl(var(--primary))" strokeWidth={2} />
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <p className="text-center text-muted-foreground py-8">No hay datos de vistas aún</p>
+            <p className="text-center text-muted-foreground py-8 text-sm">No hay datos de vistas aún</p>
           )}
         </CardContent>
       </Card>
@@ -177,17 +177,17 @@ export const AnalyticsCard = ({ userId }: AnalyticsCardProps) => {
         </CardHeader>
         <CardContent>
           {topLinks.length > 0 ? (
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250} className="sm:h-[300px]">
               <BarChart data={topLinks} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis dataKey="title" type="category" width={150} />
+                <XAxis type="number" tick={{ fontSize: 12 }} />
+                <YAxis dataKey="title" type="category" width={100} tick={{ fontSize: 12 }} className="sm:w-[150px]" />
                 <Tooltip />
                 <Bar dataKey="clicks" fill="hsl(var(--primary))" />
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <p className="text-center text-muted-foreground py-8">No hay clics registrados aún</p>
+            <p className="text-center text-muted-foreground py-8 text-sm">No hay clics registrados aún</p>
           )}
         </CardContent>
       </Card>
@@ -202,14 +202,14 @@ export const AnalyticsCard = ({ userId }: AnalyticsCardProps) => {
           {topReferrers.length > 0 ? (
             <div className="space-y-2">
               {topReferrers.map((ref, index) => (
-                <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                  <span className="text-sm font-medium truncate flex-1">{ref.referrer}</span>
-                  <span className="text-sm text-muted-foreground ml-2">{ref.count} visitas</span>
+                <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 border rounded-lg gap-1 sm:gap-2">
+                  <span className="text-xs sm:text-sm font-medium truncate flex-1">{ref.referrer}</span>
+                  <span className="text-xs sm:text-sm text-muted-foreground">{ref.count} visitas</span>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-center text-muted-foreground py-8">No hay datos de referencias aún</p>
+            <p className="text-center text-muted-foreground py-8 text-sm">No hay datos de referencias aún</p>
           )}
         </CardContent>
       </Card>

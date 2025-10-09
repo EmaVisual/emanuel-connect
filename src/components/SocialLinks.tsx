@@ -43,7 +43,7 @@ export const SocialLinks = ({ links }: SocialLinksProps) => {
   };
 
   return (
-    <div className="flex justify-center space-x-6 mb-8">
+    <div className="flex justify-center flex-wrap gap-4 sm:gap-6 mb-6 sm:mb-8">
       {links.map((link) => (
         <a
           key={link.platform}

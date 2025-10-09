@@ -94,18 +94,18 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-primary flex items-center justify-center relative">
       {isAdmin && (
         <Button
-          className="fixed top-4 right-4 z-50"
+          className="fixed top-2 right-2 sm:top-4 sm:right-4 z-50 text-xs sm:text-sm"
           variant="outline"
           size="sm"
           onClick={() => navigate("/dashboard")}
         >
-          <Settings className="w-4 h-4 mr-2" />
-          Dashboard
+          <Settings className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+          <span className="hidden xs:inline">Dashboard</span>
         </Button>
       )}
 
-      <div className="container mx-auto px-4 py-8 flex justify-center">
-        <div className="max-w-md w-full space-y-6 flex flex-col items-center">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 flex justify-center">
+        <div className="max-w-md w-full space-y-4 sm:space-y-6 flex flex-col items-center">
           {/* Profile Header */}
           {profile && (
             <ProfileHeader
@@ -119,7 +119,7 @@ const Index = () => {
           {socialLinks.length > 0 && <SocialLinks links={socialLinks} />}
 
           {/* Custom Link Buttons */}
-          <div className="space-y-4 w-full">
+          <div className="space-y-3 sm:space-y-4 w-full">
             {customLinks.map((link) => (
               <LinkButton 
                 key={link.id} 
@@ -135,7 +135,7 @@ const Index = () => {
 
           {/* Spotify Embed */}
           {profile?.spotify_embed_url && (
-            <div className="pt-6 w-full">
+            <div className="pt-4 sm:pt-6 w-full">
               <SpotifyEmbed url={profile.spotify_embed_url} />
             </div>
           )}

@@ -7,7 +7,7 @@ export const SpotifyEmbed = ({ url }: SpotifyEmbedProps) => {
   
   return (
     <div className="w-full max-w-md mx-auto">
-      <h3 className="text-xl font-semibold text-foreground mb-4 text-center">
+      <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-3 sm:mb-4 text-center">
         Music is Life
       </h3>
       <div className="rounded-xl overflow-hidden shadow-lg">
@@ -21,6 +21,7 @@ export const SpotifyEmbed = ({ url }: SpotifyEmbedProps) => {
           allowFullScreen={true}
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
           loading="lazy"
+          className="h-[280px] sm:h-[352px]"
         ></iframe>
       </div>
     </div>
