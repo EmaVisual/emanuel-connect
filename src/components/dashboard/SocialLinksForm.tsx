@@ -61,30 +61,48 @@ export const SocialLinksForm = ({ userId }: SocialLinksFormProps) => {
     e.preventDefault();
     setLoading(true);
 
-    for (const link of links) {
-      if (link.url) {
-        await supabase.from("social_links").upsert({
-          id: link.id,
-          user_id: userId,
-          platform: link.platform,
-          url: link.url,
-          order_index: links.indexOf(link),
-          is_active: true,
-        }, {
-          onConflict: 'id'
-        });
-      } else if (link.id) {
-        await supabase.from("social_links").delete().eq("id", link.id);
+    try {
+      for (const link of links) {
+        if (link.url.trim()) {
+          const { error } = await supabase.from("social_links").upsert({
+            user_id: userId,
+            platform: link.platform,
+            url: link.url.trim(),
+            order_index: links.indexOf(link),
+            is_active: true,
+          }, {
+            onConflict: 'user_id,platform'
+          });
+          
+          if (error) {
+            console.error('Error saving link:', error);
+            throw error;
+          }
+        } else if (link.id) {
+          const { error } = await supabase.from("social_links").delete().eq("id", link.id);
+          if (error) {
+            console.error('Error deleting link:', error);
+            throw error;
+          }
+        }
       }
+
+      toast({
+        title: "Guardado",
+        description: "Redes sociales actualizadas correctamente",
+      });
+
+      await loadSocialLinks();
+    } catch (error) {
+      console.error('Error in handleSave:', error);
+      toast({
+        title: "Error",
+        description: "No se pudieron guardar los cambios. Intenta de nuevo.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
-
-    toast({
-      title: "Guardado",
-      description: "Redes sociales actualizadas",
-    });
-
-    setLoading(false);
-    loadSocialLinks();
   };
 
   const updateLink = (platform: string, url: string) => {
