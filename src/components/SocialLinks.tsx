@@ -1,4 +1,4 @@
-import { Instagram, Linkedin, Mail, Globe, Music } from "lucide-react";
+import { Instagram, Linkedin, Mail, Globe, Music, MessageCircle, Youtube, Twitter, Image as ImageIcon, Facebook, Phone, MapPin, Twitch } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface SocialLinksProps {
@@ -13,6 +13,9 @@ interface SocialLinksProps {
 export const SocialLinks = ({ links }: SocialLinksProps) => {
   const getIcon = (platform: string) => {
     switch (platform) {
+      case "whatsapp1":
+      case "whatsapp2":
+        return <MessageCircle className="social-icon" />;
       case "instagram":
         return <Instagram className="social-icon" />;
       case "linkedin":
@@ -23,6 +26,22 @@ export const SocialLinks = ({ links }: SocialLinksProps) => {
         return <Mail className="social-icon" />;
       case "website":
         return <Globe className="social-icon" />;
+      case "youtube":
+        return <Youtube className="social-icon" />;
+      case "twitter":
+        return <Twitter className="social-icon" />;
+      case "pinterest":
+        return <ImageIcon className="social-icon" />;
+      case "facebook":
+        return <Facebook className="social-icon" />;
+      case "threads":
+        return <Music className="social-icon" />;
+      case "twitch":
+        return <Twitch className="social-icon" />;
+      case "phone":
+        return <Phone className="social-icon" />;
+      case "location":
+        return <MapPin className="social-icon" />;
       default:
         return <Globe className="social-icon" />;
     }

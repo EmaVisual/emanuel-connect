@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Instagram, Linkedin, Mail, Globe, Music } from "lucide-react";
+import { Instagram, Linkedin, Mail, Globe, Music, MessageCircle, Youtube, Twitter, Image as ImageIcon, Facebook, Phone, MapPin, Twitch } from "lucide-react";
 
 interface SocialLinksFormProps {
   userId: string;
@@ -21,11 +21,21 @@ export const SocialLinksForm = ({ userId }: SocialLinksFormProps) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [links, setLinks] = useState<SocialLink[]>([
+    { platform: "whatsapp1", url: "" },
+    { platform: "whatsapp2", url: "" },
     { platform: "instagram", url: "" },
-    { platform: "linkedin", url: "" },
-    { platform: "tiktok", url: "" },
-    { platform: "email", url: "" },
     { platform: "website", url: "" },
+    { platform: "youtube", url: "" },
+    { platform: "tiktok", url: "" },
+    { platform: "twitter", url: "" },
+    { platform: "pinterest", url: "" },
+    { platform: "facebook", url: "" },
+    { platform: "linkedin", url: "" },
+    { platform: "threads", url: "" },
+    { platform: "twitch", url: "" },
+    { platform: "email", url: "" },
+    { platform: "phone", url: "" },
+    { platform: "location", url: "" },
   ]);
 
   useEffect(() => {
@@ -82,12 +92,31 @@ export const SocialLinksForm = ({ userId }: SocialLinksFormProps) => {
 
   const getIcon = (platform: string) => {
     switch (platform) {
+      case "whatsapp1": case "whatsapp2": return <MessageCircle className="w-4 h-4" />;
       case "instagram": return <Instagram className="w-4 h-4" />;
       case "linkedin": return <Linkedin className="w-4 h-4" />;
       case "tiktok": return <Music className="w-4 h-4" />;
       case "email": return <Mail className="w-4 h-4" />;
       case "website": return <Globe className="w-4 h-4" />;
+      case "youtube": return <Youtube className="w-4 h-4" />;
+      case "twitter": return <Twitter className="w-4 h-4" />;
+      case "pinterest": return <ImageIcon className="w-4 h-4" />;
+      case "facebook": return <Facebook className="w-4 h-4" />;
+      case "threads": return <Music className="w-4 h-4" />;
+      case "twitch": return <Twitch className="w-4 h-4" />;
+      case "phone": return <Phone className="w-4 h-4" />;
+      case "location": return <MapPin className="w-4 h-4" />;
       default: return null;
+    }
+  };
+
+  const getLabel = (platform: string) => {
+    switch (platform) {
+      case "whatsapp1": return "WhatsApp 1";
+      case "whatsapp2": return "WhatsApp 2";
+      case "phone": return "Teléfono";
+      case "location": return "Ubicación";
+      default: return platform.charAt(0).toUpperCase() + platform.slice(1);
     }
   };
 
@@ -101,15 +130,15 @@ export const SocialLinksForm = ({ userId }: SocialLinksFormProps) => {
         <form onSubmit={handleSave} className="space-y-4">
           {links.map((link) => (
             <div key={link.platform} className="space-y-2">
-              <Label htmlFor={link.platform} className="flex items-center gap-2 capitalize">
+              <Label htmlFor={link.platform} className="flex items-center gap-2">
                 {getIcon(link.platform)}
-                {link.platform}
+                {getLabel(link.platform)}
               </Label>
               <Input
                 id={link.platform}
                 value={link.url}
                 onChange={(e) => updateLink(link.platform, e.target.value)}
-                placeholder={`URL de ${link.platform}`}
+                placeholder={`URL de ${getLabel(link.platform)}`}
               />
             </div>
           ))}

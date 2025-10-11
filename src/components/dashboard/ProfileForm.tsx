@@ -17,11 +17,13 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadingCover, setUploadingCover] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [company, setCompany] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
+  const [coverImageUrl, setCoverImageUrl] = useState("");
   const [spotifyEmbedUrl, setSpotifyEmbedUrl] = useState("");
 
   useEffect(() => {
@@ -41,6 +43,7 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
       setJobTitle((data as any).job_title || "");
       setCompany((data as any).company || "");
       setAvatarUrl(data.avatar_url || "");
+      setCoverImageUrl((data as any).cover_image_url || "");
       setSpotifyEmbedUrl(data.spotify_embed_url || "");
     }
   };
@@ -91,6 +94,52 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
     }
   };
 
+  const handleCoverUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast({
+        title: "Error",
+        description: "Por favor sube una imagen válida",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploadingCover(true);
+
+    try {
+      const fileExt = file.name.split(".").pop();
+      const filePath = `${userId}/cover-${Math.random()}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("avatars")
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from("avatars")
+        .getPublicUrl(filePath);
+
+      setCoverImageUrl(publicUrl);
+
+      toast({
+        title: "Portada subida",
+        description: "Tu imagen de portada se ha subido correctamente. No olvides guardar los cambios.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setUploadingCover(false);
+    }
+  };
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -104,6 +153,7 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
         job_title: jobTitle,
         company,
         avatar_url: avatarUrl,
+        cover_image_url: coverImageUrl,
         spotify_embed_url: spotifyEmbedUrl,
       });
 
@@ -200,6 +250,28 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
           </div>
 
           <div className="space-y-2">
+            <Label>Imagen de Portada</Label>
+            <div className="space-y-2">
+              {coverImageUrl && (
+                <div className="w-full h-32 rounded-lg overflow-hidden bg-muted">
+                  <img src={coverImageUrl} alt="Portada" className="w-full h-full object-cover" />
+                </div>
+              )}
+              <Input
+                id="cover"
+                type="file"
+                accept="image/*"
+                onChange={handleCoverUpload}
+                disabled={uploadingCover}
+                className="cursor-pointer"
+              />
+              <p className="text-xs text-muted-foreground">
+                {uploadingCover ? "Subiendo..." : "Imagen que aparecerá detrás de tu foto de perfil"}
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="spotifyEmbedUrl">URL de Embed de Spotify</Label>
             <Input
               id="spotifyEmbedUrl"
@@ -209,7 +281,7 @@ export const ProfileForm = ({ userId }: ProfileFormProps) => {
             />
           </div>
 
-          <Button type="submit" disabled={loading || uploading}>
+          <Button type="submit" disabled={loading || uploading || uploadingCover}>
             {loading ? "Guardando..." : "Guardar Cambios"}
           </Button>
         </form>

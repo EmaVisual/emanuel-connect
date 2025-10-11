@@ -123,27 +123,36 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          company: string | null
+          cover_image_url: string | null
           created_at: string | null
           description: string | null
           id: string
+          job_title: string | null
           name: string
           spotify_embed_url: string | null
           updated_at: string | null
         }
         Insert: {
           avatar_url?: string | null
+          company?: string | null
+          cover_image_url?: string | null
           created_at?: string | null
           description?: string | null
           id: string
+          job_title?: string | null
           name: string
           spotify_embed_url?: string | null
           updated_at?: string | null
         }
         Update: {
           avatar_url?: string | null
+          company?: string | null
+          cover_image_url?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
+          job_title?: string | null
           name?: string
           spotify_embed_url?: string | null
           updated_at?: string | null
