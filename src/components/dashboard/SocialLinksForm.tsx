@@ -69,6 +69,9 @@ export const SocialLinksForm = ({ userId }: SocialLinksFormProps) => {
           platform: link.platform,
           url: link.url,
           order_index: links.indexOf(link),
+          is_active: true,
+        }, {
+          onConflict: 'id'
         });
       } else if (link.id) {
         await supabase.from("social_links").delete().eq("id", link.id);
